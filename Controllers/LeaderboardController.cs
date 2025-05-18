@@ -32,6 +32,8 @@ public class LeaderboardController : Controller
                 CoursesPlayed = l.CoursesPlayed,
                 TotalPoints = CalculatePoints(l.Player.Id)
             })
+            .OrderByDescending(l => l.TotalPoints)
+            .ThenBy(l => l.TotalNetScore)
             .ToList();
 
         return View(leaderboard);
