@@ -1,0 +1,31 @@
+﻿@model List<Leaderboard>
+
+
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Leaderboard</h2>
+
+    <table class="table table-striped table-hover shadow">
+        <thead class="table-dark">
+            <tr>
+                <th>Player</th>
+                <th>Total Net Score</th>
+                <th>Total Score</th>
+                <th>Courses Played</th>
+                <th>Total Points</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var player in Model)
+            {
+                <tr>
+                    <td>@player.Player.Name</td>
+                    <td>@player.TotalNetScore</td>
+                    <td>@player.TotalScore</td>
+                    <td>@player.CoursesPlayed</td>
+                    <td>@player.TotalPoints</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

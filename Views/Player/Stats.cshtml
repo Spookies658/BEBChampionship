@@ -1,0 +1,43 @@
+﻿@model List<BEBChampionship.Models.ViewModel.PlayerStatsViewModel>
+
+
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">@ViewBag.PlayerName's Golf Stats</h2>
+
+    <div class="card shadow p-4">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Golf Course</th>
+                    <th>Score</th>
+                    <th>Net Score</th>
+                    <th>FIR%</th>
+                    <th>GIR%</th>
+                    <th>Putts per Round</th>
+                    <th>Edit/Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var stat in Model)
+                {
+                    <tr>
+                        <td>@stat.GolfCourse</td>
+                        <td>@stat.Score</td>
+                        <td>@stat.NetScore</td>
+                        <td>@stat.FIR%</td>
+                        <td>@stat.GIR%</td>
+                        <td>@stat.PuttsPerRound</td>
+                        <td>
+                            <!-- Edit Button (redirect to Edit page) -->
+                            <a class="btn btn-warning btn-sm" href="@Url.Action("Edit", "Player", new { statId = stat.Id })">Edit</a>
+
+                            <!-- Delete Button (trigger confirmation) -->
+                            <a class="btn btn-danger btn-sm" href="@Url.Action("Delete", "Player", new { statId = stat.Id })" onclick="return confirm('Are you sure you want to delete this entry?');">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

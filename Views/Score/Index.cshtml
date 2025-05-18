@@ -1,0 +1,51 @@
+﻿@model Score
+
+
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Enter Golf Stats</h2>
+
+    <div class="card p-4 shadow">
+        <form method="post" asp-action="Submit">
+            <div class="mb-3">
+                <select class="form-select" asp-for="PlayerId" asp-items="@(ViewBag.Players != null ? new SelectList(ViewBag.Players, "Id", "Name") : new SelectList(new List<SelectListItem>()))">
+                    <option value="">Select a Player</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <select class="form-select" asp-for="GolfCourseId" asp-items="@(ViewBag.Courses != null ? new SelectList(ViewBag.Courses, "Id", "Name") : new SelectList(new List<SelectListItem>()))">
+                    <option value="">Select a Golf Course</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Score:</label>
+                    <input type="number" class="form-control" asp-for="ScoreValue">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Net Score:</label>
+                    <input type="number" class="form-control" asp-for="NetScore">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">FIR%:</label>
+                    <input type="number" step="0.1" class="form-control" asp-for="FIR">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">GIR%:</label>
+                    <input type="number" step="0.1" class="form-control" asp-for="GIR">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Putts per Round:</label>
+                    <input type="number" step="0.1" class="form-control" asp-for="PuttsPerRound">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Submit</button>
+        </form>
+    </div>
+</div>
