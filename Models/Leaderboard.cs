@@ -10,5 +10,9 @@
         public int TotalScore { get; set; }
         public int TotalPoints { get; set; }
         public int CoursesPlayed { get; set; }
+
+        public double AverageNetScore { get; set; }
+        public int BestNetScore { get; set; }
+        public int WorstNetScore { get; set; }
     }
 }

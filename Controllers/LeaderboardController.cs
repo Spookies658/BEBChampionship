@@ -19,18 +19,20 @@ public class LeaderboardController : Controller
             .Select(p => new
             {
                 Player = p,
-                TotalNetScore = _context.Scores.Where(s => s.PlayerId == p.Id).Sum(s => s.NetScore),
-                TotalScore = _context.Scores.Where(s => s.PlayerId == p.Id).Sum(s => s.ScoreValue),
-                CoursesPlayed = _context.Scores.Where(s => s.PlayerId == p.Id).Count()
+                Scores = _context.Scores.Where(s => s.PlayerId == p.Id).ToList()
             })
             .ToList()
             .Select(l => new Leaderboard
             {
                 Player = l.Player,
-                TotalNetScore = l.TotalNetScore,
-                TotalScore = l.TotalScore,
-                CoursesPlayed = l.CoursesPlayed,
-                TotalPoints = CalculatePoints(l.Player.Id)
+                TotalNetScore = l.Scores.Sum(s => s.NetScore),
+                TotalScore = l.Scores.Sum(s => s.ScoreValue),
+                CoursesPlayed = l.Scores.Count,
+                TotalPoints = CalculatePoints(l.Player.Id),
+
+                AverageNetScore = l.Scores.Any() ? Math.Round(l.Scores.Average(s => s.NetScore), 2) : 0,
+                BestNetScore = l.Scores.Any() ? l.Scores.Min(s => s.NetScore) : 0,
+                WorstNetScore = l.Scores.Any() ? l.Scores.Max(s => s.NetScore) : 0
             })
             .OrderByDescending(l => l.TotalPoints)
             .ThenBy(l => l.TotalNetScore)

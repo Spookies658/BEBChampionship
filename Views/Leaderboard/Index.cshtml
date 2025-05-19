@@ -28,4 +28,27 @@
             }
         </tbody>
     </table>
+
+    <h2 class="text-center mb-4">Player Trends & Stats</h2>
+    <table class="table table-striped table-hover shadow">
+        <thead class="table-dark">
+            <tr>
+                <th>Player</th>
+                <th>Avg. Net Score</th>
+                <th>Best Net Score</th>
+                <th>Worst Net Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var player in Model)
+            {
+                <tr>
+                    <td>@player.Player.Name</td>
+                    <td>@player.AverageNetScore</td>
+                    <td>@player.BestNetScore</td>
+                    <td>@player.WorstNetScore</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
