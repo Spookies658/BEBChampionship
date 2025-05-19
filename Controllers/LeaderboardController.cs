@@ -15,6 +15,8 @@ public class LeaderboardController : Controller
 
     public IActionResult Index()
     {
+        var specialCourses = new List<string> { "Bellville", "Atlantic Beach", "East London", "Royal Cape", "West Bank" };
+
         var leaderboard = _context.Players
             .Select(p => new
             {
@@ -22,17 +24,51 @@ public class LeaderboardController : Controller
                 Scores = _context.Scores.Where(s => s.PlayerId == p.Id).ToList()
             })
             .ToList()
-            .Select(l => new Leaderboard
+            .Select(l =>
             {
-                Player = l.Player,
-                TotalNetScore = l.Scores.Sum(s => s.NetScore),
-                TotalScore = l.Scores.Sum(s => s.ScoreValue),
-                CoursesPlayed = l.Scores.Count,
-                TotalPoints = CalculatePoints(l.Player.Id),
+                int wins = 0;
+                int majorWins = 0;
 
-                AverageNetScore = l.Scores.Any() ? Math.Round(l.Scores.Average(s => s.NetScore), 2) : 0,
-                BestNetScore = l.Scores.Any() ? l.Scores.Min(s => s.NetScore) : 0,
-                WorstNetScore = l.Scores.Any() ? l.Scores.Max(s => s.NetScore) : 0
+                var golfCourses = _context.Scores.Select(s => s.GolfCourseId).Distinct().ToList();
+
+                foreach (var courseId in golfCourses)
+                {
+                    var course = _context.GolfCourses.FirstOrDefault(c => c.Id == courseId);
+                    string courseName = course?.Name ?? "";
+
+                    var scoresForCourse = _context.Scores
+                        .Where(s => s.GolfCourseId == courseId)
+                        .OrderBy(s => s.NetScore)
+                        .ToList();
+
+                    // Check if player is 1st for this course
+                    var firstPlaceScore = scoresForCourse.FirstOrDefault();
+                    if (firstPlaceScore != null && firstPlaceScore.PlayerId == l.Player.Id)
+                    {
+                        wins++;
+                        if (specialCourses.Contains(courseName))
+                        {
+                            majorWins++;
+                        }
+                    }
+                }
+
+                return new Leaderboard
+                {
+                    Player = l.Player,
+                    TotalNetScore = l.Scores.Sum(s => s.NetScore),
+                    TotalScore = l.Scores.Sum(s => s.ScoreValue),
+                    CoursesPlayed = l.Scores.Count,
+                    TotalPoints = CalculatePoints(l.Player.Id),
+
+                    AverageNetScore = l.Scores.Any() ? Math.Round(l.Scores.Average(s => s.NetScore), 2) : 0,
+                    BestNetScore = l.Scores.Any() ? l.Scores.Min(s => s.NetScore) : 0,
+                    WorstNetScore = l.Scores.Any() ? l.Scores.Max(s => s.NetScore) : 0,
+                    TotalPutts = l.Scores.Sum(s => s.PuttsPerRound),
+
+                    Wins = wins,
+                    MajorWins = majorWins
+                };
             })
             .OrderByDescending(l => l.TotalPoints)
             .ThenBy(l => l.TotalNetScore)
@@ -40,6 +76,7 @@ public class LeaderboardController : Controller
 
         return View(leaderboard);
     }
+
 
     private int CalculatePoints(int playerId)
     {

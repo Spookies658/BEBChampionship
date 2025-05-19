@@ -14,5 +14,10 @@
         public double AverageNetScore { get; set; }
         public int BestNetScore { get; set; }
         public int WorstNetScore { get; set; }
+
+        public double TotalPutts { get; set; }
+        public int Wins { get; set; }
+        public int MajorWins { get; set; }
+
     }
 }

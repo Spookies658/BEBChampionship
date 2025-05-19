@@ -3,6 +3,7 @@ using BEBChampionship.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BEBChampionship.Migrations
 {
     [DbContext(typeof(BEBContext))]
-    partial class BEBContextModelSnapshot : ModelSnapshot
+    [Migration("20250519102217_updatestats")]
+    partial class updatestats
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,6 +49,12 @@ namespace BEBChampionship.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<double>("AverageFIR")
+                        .HasColumnType("float");
+
+                    b.Property<double>("AverageGIR")
+                        .HasColumnType("float");
+
                     b.Property<double>("AverageNetScore")
                         .HasColumnType("float");
 
@@ -53,9 +62,6 @@ namespace BEBChampionship.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("CoursesPlayed")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MajorWins")
                         .HasColumnType("int");
 
                     b.Property<int>("PlayerId")
@@ -71,9 +77,6 @@ namespace BEBChampionship.Migrations
                         .HasColumnType("float");
 
                     b.Property<int>("TotalScore")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Wins")
                         .HasColumnType("int");
 
                     b.Property<int>("WorstNetScore")
